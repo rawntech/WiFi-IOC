@@ -19,8 +19,8 @@ import android.support.v4.app.FragmentManager;
 public class HomeActivity extends WiFiChatBase implements ChannelListener{
 	Fragment fragment;
 	FragmentManager fragmentManager;
-	WifiP2pManager mManager;
-	Channel mChannel;
+	public WifiP2pManager mManager;
+	public Channel mChannel;
 	BroadcastReceiver mReceiver;
 	private IntentFilter intentFilter;
 	private WiFiIntentHandleListenner broadcastReceiver=null;
@@ -31,7 +31,7 @@ public class HomeActivity extends WiFiChatBase implements ChannelListener{
 		initalization();
 		startService(new Intent(this, WiFiChatService.class));
 		
-		fragment = new HomeFragment(this,mChannel,mManager);
+		fragment = new HomeFragment();
 		fragmentManager = getSupportFragmentManager();
 		fragmentManager.beginTransaction().replace(R.id.flMainLayout, fragment).commit();
 	}
