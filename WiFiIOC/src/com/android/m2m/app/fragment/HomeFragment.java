@@ -28,8 +28,6 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 public class HomeFragment extends ListFragment implements IAsyncTask,PeerListListener{
-	private WifiP2pManager wifiManager;
-	private Channel wifiChannel;
 	ProgressBar scanWiFiProgressBar;
 	ProgressDialog progressDialog = null;
 	DownloadAsyncTask asyncTask;
@@ -55,12 +53,13 @@ public class HomeFragment extends ListFragment implements IAsyncTask,PeerListLis
 	@Override
 	public void onResume() {
 		super.onResume();
+		LoadPeearsList();
 	}
 
 	private void Initialization(ViewGroup root) {
 		scanWiFiProgressBar = (ProgressBar) root.findViewById(R.id.scanWiFiProgressBar);
 		deviceList = new ArrayList<WifiP2pDevice>();
-		((HomeActivity)getActivity()).mManager.requestPeers(((HomeActivity)getActivity()).mChannel, (PeerListListener)this);
+		//((HomeActivity)getActivity()).mManager.requestPeers(((HomeActivity)getActivity()).mChannel, (PeerListListener)this);
 	}
 
 	private void LoadPeearsList() {
@@ -83,7 +82,7 @@ public class HomeFragment extends ListFragment implements IAsyncTask,PeerListLis
 	@Override
 	public Object doInBackGround() {
 		
-		wifiManager.discoverPeers(wifiChannel, new WifiP2pManager.ActionListener() {
+		((HomeActivity)getActivity()).mManager.discoverPeers(((HomeActivity)getActivity()).mChannel, new WifiP2pManager.ActionListener() {
 
 			@Override
 			public void onSuccess() {
