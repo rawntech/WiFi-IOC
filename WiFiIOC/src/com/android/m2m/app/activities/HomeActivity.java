@@ -27,8 +27,8 @@ import android.widget.Toast;
 public class HomeActivity extends WiFiChatBase implements OnClickListener{
 	Fragment fragment;
 	FragmentManager fragmentManager;
-	WifiP2pManager mManager;
-	Channel mChannel;
+	public WifiP2pManager mManager;
+	public Channel mChannel;
 	BroadcastReceiver mReceiver;
 	private IntentFilter intentFilter;
 	Button bScanWifi;
@@ -40,7 +40,7 @@ public class HomeActivity extends WiFiChatBase implements OnClickListener{
 		initalization();
 		startService(new Intent(this, WiFiChatService.class));
 		
-		fragment = new HomeFragment(this,mChannel,mManager);
+		fragment = new HomeFragment();
 		fragmentManager = getSupportFragmentManager();
 		fragmentManager.beginTransaction().replace(R.id.flMainLayout, fragment).commit();
 	}

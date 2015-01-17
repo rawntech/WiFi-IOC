@@ -17,6 +17,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.widget.Toast;
+import android.net.wifi.p2p.WifiP2pManager.PeerListListener;
 
 public class WiFiIntentHandleListenner extends BroadcastReceiver{
 	private WifiP2pManager manager;
@@ -49,7 +50,9 @@ public class WiFiIntentHandleListenner extends BroadcastReceiver{
 
             }
         } else if (WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION.equals(action)) {
-        	
+        	if(manager != null){
+        		manager.requestPeers(channel, (PeerListListener)this);
+        	}
              /*request available peers from the wifi p2p manager. This is an
              asynchronous call and the calling activity is notified with a
              callback on PeerListListener.onPeersAvailable()*/

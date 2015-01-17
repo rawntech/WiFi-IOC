@@ -3,7 +3,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.android.m2m.app.R;
-import com.android.m2m.app.adapters.WiFiPeerListAdapter;
+import com.android.m2m.app.activities.HomeActivity;
+import com.android.m2m.app.adapter.DeviceListAdapter;
 import com.android.m2m.app.asynctask.DownloadAsyncTask;
 import com.android.m2m.app.interfaces.IAsyncTask;
 
@@ -14,6 +15,9 @@ import android.net.wifi.p2p.WifiP2pDevice;
 import android.net.wifi.p2p.WifiP2pDeviceList;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.net.wifi.p2p.WifiP2pManager.Channel;
+import android.net.wifi.p2p.WifiP2pDevice;
+import android.net.wifi.p2p.WifiP2pDeviceList;
+import android.net.wifi.p2p.WifiP2pInfo;
 import android.net.wifi.p2p.WifiP2pManager.PeerListListener;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
@@ -31,12 +35,15 @@ public class HomeFragment extends ListFragment implements IAsyncTask,PeerListLis
 	DownloadAsyncTask asyncTask;
 	private List<WifiP2pDevice> peers = new ArrayList<WifiP2pDevice>();
 	Context context;
-	WiFiPeerListAdapter adapter=null;
-	public HomeFragment(Context _context,Channel _wifiChannel,WifiP2pManager _wifiManager) {
+	/*public HomeFragment(Context _context,Channel _wifiChannel,WifiP2pManager _wifiManager) {
 		context=_context;
 		wifiChannel=_wifiChannel;
 		wifiManager=_wifiManager;
-	}
+	}*/
+	ArrayList<WifiP2pDevice> deviceList;
+	WifiP2pInfo wifiP2pInfo;
+	DeviceListAdapter adapter;
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -52,7 +59,8 @@ public class HomeFragment extends ListFragment implements IAsyncTask,PeerListLis
 
 	private void Initialization(ViewGroup root) {
 		scanWiFiProgressBar = (ProgressBar) root.findViewById(R.id.scanWiFiProgressBar);
-		LoadPeearsList();
+		deviceList = new ArrayList<WifiP2pDevice>();
+		((HomeActivity)getActivity()).mManager.requestPeers(((HomeActivity)getActivity()).mChannel, (PeerListListener)this);
 	}
 
 	private void LoadPeearsList() {
@@ -64,23 +72,12 @@ public class HomeFragment extends ListFragment implements IAsyncTask,PeerListLis
 
 	@Override
 	public void showProgressBar() {
-		if (progressDialog != null && progressDialog.isShowing()) {
-			progressDialog.dismiss();
-		}
-		progressDialog = ProgressDialog.show(getActivity(),
-				"Press back to cancel", "finding nodes", true, true,
-				new DialogInterface.OnCancelListener() {
-
-					@Override
-					public void onCancel(DialogInterface dialog) {
-
-					}
-				});
+		scanWiFiProgressBar.setVisibility(View.VISIBLE);
 	}
 
 	@Override
 	public void hideProgressBar() {
-		progressDialog.cancel();
+		scanWiFiProgressBar.setVisibility(View.GONE);
 	}
 
 	@Override
@@ -107,25 +104,20 @@ public class HomeFragment extends ListFragment implements IAsyncTask,PeerListLis
 
 	@Override
 	public void processDataAferDownload(Object object) {
-		
+		adapter = new DeviceListAdapter(getActivity(), R.layout.adapter_devicelist, deviceList);
+		setListAdapter(adapter);
 	}
 	
 	public void setDeviceToAdapter(ArrayList<WifiP2pDevice> devices){
 		
 	}
-	
-	public void updateUI(WifiP2pDeviceList peerList){
-		peers.clear();
-		peers.addAll(peerList.getDeviceList());
-		adapter=new WiFiPeerListAdapter(getActivity(), R.layout.device_list_item, peers);
-		
-	}
-	
+
 	@Override
-	public void onPeersAvailable(WifiP2pDeviceList peerList) {
-		peers.clear();
-		peers.addAll(peerList.getDeviceList());
-		adapter=new WiFiPeerListAdapter(getActivity(), R.layout.device_list_item, peers);
+	public void onPeersAvailable(WifiP2pDeviceList peers) {
+		// TODO Auto-generated method stub
 		
 	}
+	
+	
 }
+
