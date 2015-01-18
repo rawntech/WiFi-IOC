@@ -3,6 +3,7 @@ package com.android.m2m.app.activities;
 import com.android.m2m.app.R;
 import com.android.m2m.app.base.WiFiChatBase;
 import com.android.m2m.app.base.WiFiChatService;
+import com.android.m2m.app.base.WiFiIntentHandleListenner;
 import com.android.m2m.app.fragment.HomeFragment;
 
 import android.content.BroadcastReceiver;
@@ -21,6 +22,7 @@ public class HomeActivity extends WiFiChatBase{
 	Channel mChannel;
 	BroadcastReceiver mReceiver;
 	private IntentFilter intentFilter;
+	private WiFiIntentHandleListenner broadcastReceiver=null;
 	@Override
 	protected void onCreate(Bundle saveInstance) {
 		super.onCreate(saveInstance);
@@ -37,12 +39,15 @@ public class HomeActivity extends WiFiChatBase{
 	protected void onResume() {
 		super.onResume();
 		//do registration hare (register bradcastlistner)
+		broadcastReceiver=new WiFiIntentHandleListenner(this, mManager, mChannel);
+		registerReceiver(broadcastReceiver, intentFilter);
 	}
 	
 	@Override
 	protected void onPause() {
 		super.onPause();
 		//unregister listner
+		unregisterReceiver(broadcastReceiver);
 	}
 	
 	private void initalization(){
