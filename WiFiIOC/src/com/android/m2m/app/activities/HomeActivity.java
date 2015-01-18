@@ -11,11 +11,12 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.net.wifi.p2p.WifiP2pManager.Channel;
+import android.net.wifi.p2p.WifiP2pManager.ChannelListener;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 
-public class HomeActivity extends WiFiChatBase{
+public class HomeActivity extends WiFiChatBase implements ChannelListener{
 	Fragment fragment;
 	FragmentManager fragmentManager;
 	WifiP2pManager mManager;
@@ -30,7 +31,7 @@ public class HomeActivity extends WiFiChatBase{
 		initalization();
 		startService(new Intent(this, WiFiChatService.class));
 		
-		fragment = new HomeFragment();
+		fragment = new HomeFragment(this,mChannel,mManager);
 		fragmentManager = getSupportFragmentManager();
 		fragmentManager.beginTransaction().replace(R.id.flMainLayout, fragment).commit();
 	}
@@ -58,5 +59,11 @@ public class HomeActivity extends WiFiChatBase{
 		intentFilter.addAction(WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION);
 		intentFilter.addAction(WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION);
 		intentFilter.addAction(WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION);
+	}
+
+	@Override
+	public void onChannelDisconnected() {
+		// TODO Auto-generated method stub
+		
 	}
 }

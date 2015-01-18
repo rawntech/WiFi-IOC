@@ -3,6 +3,7 @@ import com.android.m2m.app.R;
 import com.android.m2m.app.asynctask.DownloadAsyncTask;
 import com.android.m2m.app.interfaces.IAsyncTask;
 
+import android.content.Context;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.net.wifi.p2p.WifiP2pManager.Channel;
 import android.os.Bundle;
@@ -17,6 +18,12 @@ public class HomeFragment extends ListFragment implements IAsyncTask{
 	private Channel wifiChannel;
 	ProgressBar scanWiFiProgressBar;
 	DownloadAsyncTask asyncTask;
+	Context context;
+	public HomeFragment(Context _context,Channel _wifiChannel,WifiP2pManager _wifiManager) {
+		context=_context;
+		wifiChannel=_wifiChannel;
+		wifiManager=_wifiManager;
+	}
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -58,7 +65,7 @@ public class HomeFragment extends ListFragment implements IAsyncTask{
 	}
 
 	@Override
-	public void processDataAferDownload() {
+	public void processDataAferDownload(Object object) {
 		
 	}
 }

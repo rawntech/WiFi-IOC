@@ -32,7 +32,7 @@ public class DownloadAsyncTask extends AsyncTask<Void, Void, Object>{
 	protected void onPostExecute(Object data) {
 		if(asyncTask != null){
 			asyncTask.hideProgressBar();
-			asyncTask.processDataAferDownload();
+			asyncTask.processDataAferDownload(data);
 		}
 	}
 
