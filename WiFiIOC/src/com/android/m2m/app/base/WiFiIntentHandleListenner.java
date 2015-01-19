@@ -1,6 +1,8 @@
 package com.android.m2m.app.base;
 
 
+import java.util.ArrayList;
+
 import com.android.m2m.app.R;
 import com.android.m2m.app.activities.HomeActivity;
 import com.android.m2m.app.fragment.DeviceDetailsFragment;
@@ -10,6 +12,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.NetworkInfo;
+import android.net.wifi.p2p.WifiP2pDevice;
 import android.net.wifi.p2p.WifiP2pDeviceList;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.net.wifi.p2p.WifiP2pManager.Channel;
@@ -18,6 +21,7 @@ import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.widget.Toast;
 import android.net.wifi.p2p.WifiP2pManager.PeerListListener;
+import android.os.Handler;
 
 public class WiFiIntentHandleListenner extends BroadcastReceiver{
 	private WifiP2pManager manager;
@@ -26,6 +30,7 @@ public class WiFiIntentHandleListenner extends BroadcastReceiver{
 	DeviceDetailsFragment deviceDetailsFragment;
 	Fragment fragment;
 	FragmentManager fragmentManager;
+	ArrayList<WifiP2pDevice> deviceList=new ArrayList<WifiP2pDevice>();
 	
 	public WiFiIntentHandleListenner(HomeActivity _activity,WifiP2pManager _manager,Channel _channel) {
 		activity=_activity;
@@ -50,28 +55,15 @@ public class WiFiIntentHandleListenner extends BroadcastReceiver{
 
             }
         } else if (WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION.equals(action)) {
-             /*request available peers from the wifi p2p manager. This is an
-             asynchronous call and the calling activity is notified with a
-             callback on PeerListListener.onPeersAvailable()*/
-        	//manager.requestPeers(channel, (PeerListListener)activity.getFragmentManager().)
-        	
-        	 /*manager.requestPeers(channel, new WifiP2pManager.PeerListListener() {
-                 @Override
-                 public void onPeersAvailable(WifiP2pDeviceList peers) {
-                     Log.d(TAG,String.format("PeerListListener: %d peers available, updating device list", peers.getDeviceList().size()));
-
-                     // DO WHATEVER YOU WANT HERE
-                     // YOU CAN GET ACCESS TO ALL THE DEVICES YOU FOUND FROM peers OBJECT
-
-                 }
-             });*/
-        	
-        	if(manager!=null){
-        		manager.requestPeers(channel, new WifiP2pManager.PeerListListener() {
+            if(manager!=null){
+            	manager.requestPeers(channel, activity);
+        		/*manager.requestPeers(channel, new WifiP2pManager.PeerListListener() {
 					
 					@Override
 					public void onPeersAvailable(WifiP2pDeviceList peers) {
-						
+						HomeFragment fragment = new HomeFragment(activity, channel, manager);
+						deviceList.addAll(peers.getDeviceList());
+						fragment.addDevice(deviceList);
 						Intent intent2open = new Intent(activity, HomeActivity.class);
 			        	intent2open.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			        	intent2open.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -79,10 +71,10 @@ public class WiFiIntentHandleListenner extends BroadcastReceiver{
 			        	intent2open.putExtra(name, peers);
 			        	activity.startActivity(intent2open);
 						
-						Log.d("m2m", peers.toString());
-						Toast.makeText(activity, "Device Found :"+peers.getDeviceList().toString(), Toast.LENGTH_SHORT).show();
+						//Log.d("m2m", peers.toString());
+						//Toast.makeText(activity, "Device Found :"+peers.getDeviceList().toString(), Toast.LENGTH_SHORT).show();
 					}
-				});
+				});*/
         	}
         	
         

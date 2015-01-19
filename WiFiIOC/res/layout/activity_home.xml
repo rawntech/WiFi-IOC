@@ -3,15 +3,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@android:color/darker_gray" >
+    android:background="@android:color/white" >
     <FrameLayout 
         android:id="@+id/flMainLayout"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"/>
-    <include 
+    <!-- <include 
         android:id="@+id/incScanButton"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        layout="@layout/layout_scan_button"/>
+        layout="@layout/layout_scan_button"/> -->
 </RelativeLayout>

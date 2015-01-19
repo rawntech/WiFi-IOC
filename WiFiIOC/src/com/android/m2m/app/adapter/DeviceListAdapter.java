@@ -10,9 +10,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-public class DeviceListAdapter extends ArrayAdapter<WifiP2pDevice>{
+public class DeviceListAdapter extends BaseAdapter{
 	
 	Context context;
 	ArrayList<WifiP2pDevice> wifiP2pDeviceList;
@@ -20,7 +21,6 @@ public class DeviceListAdapter extends ArrayAdapter<WifiP2pDevice>{
 
 	public DeviceListAdapter(Context context, int textViewResourceId,
 			ArrayList<WifiP2pDevice> objects) {
-		super(context, textViewResourceId, objects);
 		this.context = context;
 		wifiP2pDeviceList = objects;
 	}
